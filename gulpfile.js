@@ -4,7 +4,7 @@ var gulp = require('gulp');
 var gulpLoadPlugins = require('gulp-load-plugins');
 
 var $ = gulpLoadPlugins({pattern: '*', lazy: true}),
-    _ = {src: 'src', dist: 'dist', 'cssPreProcessor': 'less'};	//在此处切换less/sass
+    _ = {src: 'src', dist: 'dist', 'cssPreProcessor': 'sass'};	//在此处切换less/sass
 
 // 防止中断
 function swallowError(err) {
@@ -64,7 +64,7 @@ gulp.task('dev:tmod', function () {
 
 // 注册监听任务
 gulp.task('dev:watch', function () {
-    gulp.watch([_.src + '/less/**/*.less'], ['dev:less']);//监听less
+    gulp.watch([_.src + '/sass/**/*.scss'], ['dev:sass']);//sass
     gulp.watch([_.src + '/**/*.html', '!' + _.src + '/tpls/**/*.html'], ['dev:html']);
     gulp.watch([_.src + '/tpls/**/*.html'], ['dev:tmod']);
     gulp.watch([_.src + '/js/**/*.js'], ['dev:js']);
@@ -124,7 +124,7 @@ gulp.task('build:js', ['requirejs'], function () {
 });
 
 // css压缩
-gulp.task('build:css', function () {
+gulp.task('build:css',['dev:sass'], function () {
     return gulp.src(_.src + '/css/**/*.css')
         .pipe($.cleanCss({compatibility: 'ie7'}))//不需要压缩可以注释掉
         .pipe(gulp.dest(_.dist + '/css'));

@@ -8,7 +8,7 @@
 </head>
 <body>
 	<div class="tt"></div>
-	<script src="http://www.onlyou.com/assets/js/framework/lib/require/require.js"></script>
+	<script src="js/require.js"></script>
 	<!-- build:js js/main.js -->
 	<script src="/js/config.js"></script>
 	<!-- endbuild -->
