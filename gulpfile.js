@@ -123,6 +123,22 @@ gulp.task('build:js', ['requirejs'], function () {
         .pipe(gulp.dest(_.dist + '/js'));
 });
 
+// artTemplate 编译
+gulp.task('build:tmod', function () {
+    return gulp.src([_.src + '/tpls/**/*.html'])
+        .pipe($.plumber(swallowError))
+        .pipe($.tmod({
+            templateBase: _.src + '/tpls',
+            combo: true,
+            runtime: 'templateModule.js', // 输出文件名
+            compress: true, // 是否压缩 HTML 多余空白字符
+            minify: true,
+            cache: false
+        }))
+		.pipe($.uglify({output: {ascii_only: true}}))//不需要压缩可以注释掉
+        .pipe(gulp.dest(_.dist + '/js/module'));
+});
+
 // css压缩
 gulp.task('build:css',['dev:sass'], function () {
     return gulp.src(_.src + '/css/**/*.css')
@@ -171,5 +187,5 @@ gulp.task('build:connect', function () {
 });
 
 gulp.task('build', function () {
-    $.runSequence('build:del', ['build:img', 'build:js', 'build:css', 'build:html'], 'build:connect');
+    $.runSequence('build:del', ['build:img', 'build:js', 'build:tmod', 'build:css', 'build:html'], 'build:connect');
 });
